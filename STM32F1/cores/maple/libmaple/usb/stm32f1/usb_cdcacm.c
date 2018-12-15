@@ -109,7 +109,7 @@ static void usbSetDeviceAddress(void);
 
 /* FIXME move to Wirish */
 static const usb_descriptor_device usbVcomDescriptor_Device =
-    USB_CDCACM_DECLARE_DEV_DESC(LEAFLABS_ID_VENDOR, USB_DEF_PRODUCT_ID);
+    USB_CDCACM_DECLARE_DEV_DESC(USB_DEF_VENDOR_ID, USB_DEF_PRODUCT_ID);
 
 typedef struct {
     usb_descriptor_config_header Config_Header;
