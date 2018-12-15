@@ -87,8 +87,29 @@ static void usbSetDeviceAddress(void);
 /* FIXME move to Wirish */
 #define LEAFLABS_ID_VENDOR                0x1EAF
 #define MAPLE_ID_PRODUCT                  0x0004
+
+/** 
+ * Global USB definitions
+ * FIXME: This will eventually be moved to Wirish with the code below
+ */
+#ifndef USB_DEF_VENDOR_ID
+#define USB_DEF_VENDOR_ID LEAFLABS_ID_VENDOR
+#endif
+#ifndef USB_DEF_PRODUCT_ID
+#define USB_DEF_PRODUCT_ID MAPLE_ID_PRODUCT
+#endif
+#if !defined(USB_DEF_VENDOR_DESC) || !defined(USB_DEF_VENDOR_DESC_LEN)
+#define USB_DEF_VENDOR_DESC 'L', 0, 'e', 0, 'a', 0, 'f', 0, 'L', 0, 'a', 0, 'b', 0, 's', 0
+#define USB_DEF_VENDOR_DESC_LEN 8
+#endif
+#if !defined(USB_DEF_PRODUCT_DESC) || !defined(USB_DEF_PRODUCT_DESC_LEN)
+#define USB_DEF_PRODUCT_DESC 'M', 0, 'a', 0, 'p', 0, 'l', 0, 'e', 0
+#define USB_DEF_PRODUCT_DESC_LEN 5
+#endif
+
+/* FIXME move to Wirish */
 static const usb_descriptor_device usbVcomDescriptor_Device =
-    USB_CDCACM_DECLARE_DEV_DESC(LEAFLABS_ID_VENDOR, MAPLE_ID_PRODUCT);
+    USB_CDCACM_DECLARE_DEV_DESC(LEAFLABS_ID_VENDOR, USB_DEF_PRODUCT_ID);
 
 typedef struct {
     usb_descriptor_config_header Config_Header;
@@ -224,17 +245,16 @@ static const usb_descriptor_string usbVcomDescriptor_LangID = {
 
 /* FIXME move to Wirish */
 static const usb_descriptor_string usbVcomDescriptor_iManufacturer = {
-    .bLength = USB_DESCRIPTOR_STRING_LEN(8),
+    .bLength = USB_DESCRIPTOR_STRING_LEN(USB_DEF_VENDOR_DESC_LEN),
     .bDescriptorType = USB_DESCRIPTOR_TYPE_STRING,
-    .bString = {'L', 0, 'e', 0, 'a', 0, 'f', 0,
-                'L', 0, 'a', 0, 'b', 0, 's', 0},
+    .bString = { USB_DEF_VENDOR_DESC },
 };
 
 /* FIXME move to Wirish */
 static const usb_descriptor_string usbVcomDescriptor_iProduct = {
-    .bLength = USB_DESCRIPTOR_STRING_LEN(5),
+    .bLength = USB_DESCRIPTOR_STRING_LEN(USB_DEF_PRODUCT_DESC_LEN),
     .bDescriptorType = USB_DESCRIPTOR_TYPE_STRING,
-    .bString = {'M', 0, 'a', 0, 'p', 0, 'l', 0, 'e', 0},
+    .bString = { USB_DEF_PRODUCT_DESC },
 };
 
 static ONE_DESCRIPTOR Device_Descriptor = {
@@ -250,8 +270,8 @@ static ONE_DESCRIPTOR Config_Descriptor = {
 #define N_STRING_DESCRIPTORS 3
 static ONE_DESCRIPTOR String_Descriptor[N_STRING_DESCRIPTORS] = {
     {(uint8*)&usbVcomDescriptor_LangID,       USB_DESCRIPTOR_STRING_LEN(1)},
-    {(uint8*)&usbVcomDescriptor_iManufacturer,USB_DESCRIPTOR_STRING_LEN(8)},
-    {(uint8*)&usbVcomDescriptor_iProduct,     USB_DESCRIPTOR_STRING_LEN(5)}
+    {(uint8*)&usbVcomDescriptor_iManufacturer,USB_DESCRIPTOR_STRING_LEN(USB_DEF_VENDOR_DESC_LEN)},
+    {(uint8*)&usbVcomDescriptor_iProduct,     USB_DESCRIPTOR_STRING_LEN(USB_DEF_PRODUCT_DESC_LEN)}
 };
 
 /*
